@@ -339,6 +339,17 @@ type Strategy @entity {
   harvests: [Harvest!]! @derivedFrom(field: "strategy")
 }
 
+type StrategyMigration @entity {
+  "The Strategy ID."
+  id: ID!
+  "Old Strategy"
+  old: Strategy!
+  "New Strategy"
+  new: Strategy!
+  "Timestamp the migration was created."
+  timestamp: BigInt!
+}
+
 type StrategyReport @entity {
   "The Strategy Report ID."
   id: ID!
