@@ -1,19 +1,19 @@
 # Yearn Vaults V2 Subgraph
 
-This is the non-official subgraph for the Vault V2 - Yearn Protocol.
+This is the official subgraph for the Vault V2 - Yearn Protocol.
 
-It is based on [this feature branch](https://github.com/iearn-finance/yearn-vaults/tree/feat/registry-redux).
+The subgraph is being updated and fixed constantly.
 
 ## Get Started
 
 To get started, you need to install the dependencies:
 
-- Using Yarn: ```yarn install```
-- Using NPM: ```npm install```
+- Using Yarn: `yarn install`
+- Using NPM: `npm install`
 
 ## Network Configuration
 
-Once the smart contracts are deployed on a testnet or mainnet, the JSON files located at folder ```config``` must be updated.
+Once the smart contracts are deployed on a testnet or mainnet, the JSON files located at folder `config` must be updated.
 
 The final **subgraph.yaml** file is used to deploy on the network.
 
@@ -29,8 +29,13 @@ At this moment, the scripts available are:
 - **yarn deploy:kovan**: build the subgraph.yaml file, and deploy it on the Kovan testnet.
 - **yarn deploy:mainnet**: build the subgraph.yaml file, and deploy it on the mainnet network.
 
+> The subgraph is only deployed on the mainnet network.
+
 ## Subgraphs
 
-TODO Add link to the subgraph.
+The official subgraph links are:
+
+- [Ethereum mainnet](https://thegraph.com/explorer/subgraph?id=0xf50b705e4eaba269dfe954f10c65bd34e6351e0c-0&version=0xf50b705e4eaba269dfe954f10c65bd34e6351e0c-0-0&view=Overview).
+- [Fantom Network](https://thegraph.com/legacy-explorer/subgraph/yearn/yearn-vaults-v2-fantom)
 
 ---

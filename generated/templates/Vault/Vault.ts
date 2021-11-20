@@ -92,6 +92,40 @@ export class StrategyAdded__Params {
   }
 }
 
+export class StrategyAdded1 extends ethereum.Event {
+  get params(): StrategyAdded1__Params {
+    return new StrategyAdded1__Params(this);
+  }
+}
+
+export class StrategyAdded1__Params {
+  _event: StrategyAdded1;
+
+  constructor(event: StrategyAdded1) {
+    this._event = event;
+  }
+
+  get strategy(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get debtRatio(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+
+  get minDebtPerHarvest(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
+  }
+
+  get maxDebtPerHarvest(): BigInt {
+    return this._event.parameters[3].value.toBigInt();
+  }
+
+  get performanceFee(): BigInt {
+    return this._event.parameters[4].value.toBigInt();
+  }
+}
+
 export class StrategyReported extends ethereum.Event {
   get params(): StrategyReported__Params {
     return new StrategyReported__Params(this);
@@ -135,6 +169,168 @@ export class StrategyReported__Params {
 
   get debtLimit(): BigInt {
     return this._event.parameters[7].value.toBigInt();
+  }
+}
+
+export class StrategyReported1 extends ethereum.Event {
+  get params(): StrategyReported1__Params {
+    return new StrategyReported1__Params(this);
+  }
+}
+
+export class StrategyReported1__Params {
+  _event: StrategyReported1;
+
+  constructor(event: StrategyReported1) {
+    this._event = event;
+  }
+
+  get strategy(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get gain(): BigInt {
+    return this._event.parameters[1].value.toBigInt();
+  }
+
+  get loss(): BigInt {
+    return this._event.parameters[2].value.toBigInt();
+  }
+
+  get debtPaid(): BigInt {
+    return this._event.parameters[3].value.toBigInt();
+  }
+
+  get totalGain(): BigInt {
+    return this._event.parameters[4].value.toBigInt();
+  }
+
+  get totalLoss(): BigInt {
+    return this._event.parameters[5].value.toBigInt();
+  }
+
+  get totalDebt(): BigInt {
+    return this._event.parameters[6].value.toBigInt();
+  }
+
+  get debtAdded(): BigInt {
+    return this._event.parameters[7].value.toBigInt();
+  }
+
+  get debtRatio(): BigInt {
+    return this._event.parameters[8].value.toBigInt();
+  }
+}
+
+export class StrategyMigrated extends ethereum.Event {
+  get params(): StrategyMigrated__Params {
+    return new StrategyMigrated__Params(this);
+  }
+}
+
+export class StrategyMigrated__Params {
+  _event: StrategyMigrated;
+
+  constructor(event: StrategyMigrated) {
+    this._event = event;
+  }
+
+  get oldVersion(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+
+  get newVersion(): Address {
+    return this._event.parameters[1].value.toAddress();
+  }
+}
+
+export class UpdatePerformanceFee extends ethereum.Event {
+  get params(): UpdatePerformanceFee__Params {
+    return new UpdatePerformanceFee__Params(this);
+  }
+}
+
+export class UpdatePerformanceFee__Params {
+  _event: UpdatePerformanceFee;
+
+  constructor(event: UpdatePerformanceFee) {
+    this._event = event;
+  }
+
+  get performanceFee(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+}
+
+export class UpdateManagementFee extends ethereum.Event {
+  get params(): UpdateManagementFee__Params {
+    return new UpdateManagementFee__Params(this);
+  }
+}
+
+export class UpdateManagementFee__Params {
+  _event: UpdateManagementFee;
+
+  constructor(event: UpdateManagementFee) {
+    this._event = event;
+  }
+
+  get managementFee(): BigInt {
+    return this._event.parameters[0].value.toBigInt();
+  }
+}
+
+export class StrategyRemovedFromQueue extends ethereum.Event {
+  get params(): StrategyRemovedFromQueue__Params {
+    return new StrategyRemovedFromQueue__Params(this);
+  }
+}
+
+export class StrategyRemovedFromQueue__Params {
+  _event: StrategyRemovedFromQueue;
+
+  constructor(event: StrategyRemovedFromQueue) {
+    this._event = event;
+  }
+
+  get strategy(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+}
+
+export class StrategyAddedToQueue extends ethereum.Event {
+  get params(): StrategyAddedToQueue__Params {
+    return new StrategyAddedToQueue__Params(this);
+  }
+}
+
+export class StrategyAddedToQueue__Params {
+  _event: StrategyAddedToQueue;
+
+  constructor(event: StrategyAddedToQueue) {
+    this._event = event;
+  }
+
+  get strategy(): Address {
+    return this._event.parameters[0].value.toAddress();
+  }
+}
+
+export class UpdateRewards extends ethereum.Event {
+  get params(): UpdateRewards__Params {
+    return new UpdateRewards__Params(this);
+  }
+}
+
+export class UpdateRewards__Params {
+  _event: UpdateRewards;
+
+  constructor(event: UpdateRewards) {
+    this._event = event;
+  }
+
+  get rewards(): Address {
+    return this._event.parameters[0].value.toAddress();
   }
 }
 
@@ -591,6 +787,41 @@ export class Vault extends ethereum.SmartContract {
       [
         ethereum.Value.fromUnsignedBigInt(_shares),
         ethereum.Value.fromAddress(_recipient)
+      ]
+    );
+    if (result.reverted) {
+      return new ethereum.CallResult();
+    }
+    let value = result.value;
+    return ethereum.CallResult.fromValue(value[0].toBigInt());
+  }
+
+  withdraw3(maxShares: BigInt, recipient: Address, maxLoss: BigInt): BigInt {
+    let result = super.call(
+      "withdraw",
+      "withdraw(uint256,address,uint256):(uint256)",
+      [
+        ethereum.Value.fromUnsignedBigInt(maxShares),
+        ethereum.Value.fromAddress(recipient),
+        ethereum.Value.fromUnsignedBigInt(maxLoss)
+      ]
+    );
+
+    return result[0].toBigInt();
+  }
+
+  try_withdraw3(
+    maxShares: BigInt,
+    recipient: Address,
+    maxLoss: BigInt
+  ): ethereum.CallResult<BigInt> {
+    let result = super.tryCall(
+      "withdraw",
+      "withdraw(uint256,address,uint256):(uint256)",
+      [
+        ethereum.Value.fromUnsignedBigInt(maxShares),
+        ethereum.Value.fromAddress(recipient),
+        ethereum.Value.fromUnsignedBigInt(maxLoss)
       ]
     );
     if (result.reverted) {
@@ -2125,6 +2356,48 @@ export class Withdraw2Call__Outputs {
   }
 }
 
+export class Withdraw3Call extends ethereum.Call {
+  get inputs(): Withdraw3Call__Inputs {
+    return new Withdraw3Call__Inputs(this);
+  }
+
+  get outputs(): Withdraw3Call__Outputs {
+    return new Withdraw3Call__Outputs(this);
+  }
+}
+
+export class Withdraw3Call__Inputs {
+  _call: Withdraw3Call;
+
+  constructor(call: Withdraw3Call) {
+    this._call = call;
+  }
+
+  get maxShares(): BigInt {
+    return this._call.inputValues[0].value.toBigInt();
+  }
+
+  get recipient(): Address {
+    return this._call.inputValues[1].value.toAddress();
+  }
+
+  get maxLoss(): BigInt {
+    return this._call.inputValues[2].value.toBigInt();
+  }
+}
+
+export class Withdraw3Call__Outputs {
+  _call: Withdraw3Call;
+
+  constructor(call: Withdraw3Call) {
+    this._call = call;
+  }
+
+  get value0(): BigInt {
+    return this._call.outputValues[0].value.toBigInt();
+  }
+}
+
 export class AddStrategyCall extends ethereum.Call {
   get inputs(): AddStrategyCall__Inputs {
     return new AddStrategyCall__Inputs(this);
@@ -2163,6 +2436,52 @@ export class AddStrategyCall__Outputs {
   _call: AddStrategyCall;
 
   constructor(call: AddStrategyCall) {
+    this._call = call;
+  }
+}
+
+export class AddStrategy1Call extends ethereum.Call {
+  get inputs(): AddStrategy1Call__Inputs {
+    return new AddStrategy1Call__Inputs(this);
+  }
+
+  get outputs(): AddStrategy1Call__Outputs {
+    return new AddStrategy1Call__Outputs(this);
+  }
+}
+
+export class AddStrategy1Call__Inputs {
+  _call: AddStrategy1Call;
+
+  constructor(call: AddStrategy1Call) {
+    this._call = call;
+  }
+
+  get strategy(): Address {
+    return this._call.inputValues[0].value.toAddress();
+  }
+
+  get debtRatio(): BigInt {
+    return this._call.inputValues[1].value.toBigInt();
+  }
+
+  get minDebtPerHarvest(): BigInt {
+    return this._call.inputValues[2].value.toBigInt();
+  }
+
+  get maxDebtPerHarvest(): BigInt {
+    return this._call.inputValues[3].value.toBigInt();
+  }
+
+  get performanceFee(): BigInt {
+    return this._call.inputValues[4].value.toBigInt();
+  }
+}
+
+export class AddStrategy1Call__Outputs {
+  _call: AddStrategy1Call;
+
+  constructor(call: AddStrategy1Call) {
     this._call = call;
   }
 }
