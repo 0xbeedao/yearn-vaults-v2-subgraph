@@ -20,7 +20,7 @@ import {
   StrategyRemovedFromQueue as StrategyRemovedFromQueueEvent,
   UpdateRewards as UpdateRewardsEvent,
 } from '../../generated/Registry/Vault';
-import { Strategy } from '../../generated/schema';
+import { Strategy, StrategyMigration } from '../../generated/schema';
 import { printCallInfo } from '../utils/commons';
 import { BIGINT_ZERO, ZERO_ADDRESS } from '../utils/constants';
 import * as strategyLibrary from '../utils/strategy/strategy';
@@ -28,6 +28,7 @@ import {
   getOrCreateTransactionFromCall,
   getOrCreateTransactionFromEvent,
 } from '../utils/transaction';
+import { getTimestampInMillis } from '../utils/commons';
 import * as vaultLibrary from '../utils/vault/vault';
 
 export function handleAddStrategyV2(call: AddStrategyV2Call): void {
@@ -130,14 +131,6 @@ export function handleStrategyReported_v0_3_0_v0_3_1(
   );
 }
 
-export function handleStrategyMigrated(event: StrategyMigratedEvent): void {
-  strategyMigration(
-    event.params.oldVersion,
-    event.params.newVersion,
-    event
-  )
-}
-
 /**
  * We have two handlers to process the StrategyReported event due to incompatibility in both event structure.
  * This is for vault versions 0.3.2 or superior.
@@ -200,6 +193,13 @@ export function handleStrategyMigrated(event: StrategyMigrated): void {
 
   if (oldStrategy !== null) {
     let newStrategyAddress = event.params.newVersion;
+
+    let migration = new StrategyMigration(newStrategyAddress.toHexString() + '-' + ethTransaction.id);
+    migration.oldStrategy = oldStrategyId
+    migration.newStrategy = newStrategyId
+    migration.blockNumber = event.block.number
+    migration.timestamp = getTimestampInMillis(event)
+    migration.save()
 
     if (Strategy.load(newStrategyAddress.toHexString()) !== null) {
       log.warning(
