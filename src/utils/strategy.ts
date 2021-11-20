@@ -1,9 +1,9 @@
-import { ethereum, BigInt, Address  } from "@graphprotocol/graph-ts";
+import { Address, BigInt, ethereum } from "@graphprotocol/graph-ts";
 import {
   Strategy,
+  StrategyMigration,
   StrategyReport,
 } from "../../generated/schema";
-
 import { buildIdFromEvent, getTimestampInMillis } from "./commons";
 
 export function createStrategyReport(
@@ -34,6 +34,27 @@ export function createStrategyReport(
   entity.timestamp = getTimestampInMillis(event)
   entity.save()
   return entity
+}
+
+export function migrateStrategy(
+  oldStrategyId: Address,
+  newStrategyId: Address,
+  event: ethereum.Event
+): StrategyMigration {
+  let id = buildIdFromEvent(event)
+  let newStrategy = Strategy.load(newStrategyId.toHexString())
+  // oldStrategy could be null if the strategy was deleted or never existed
+  // but newStrategy should always exist
+  if (newStrategy !== null) {
+    let entity = new StrategyMigration(id)
+    entity.oldStrategy = oldStrategyId
+    entity.newStrategy = newStrategyId
+    entity.blockNumber = event.block.number
+    entity.timestamp = getTimestampInMillis(event)
+    entity.save()
+    return entity
+  }
+  return null
 }
 
 export function reportStrategy(

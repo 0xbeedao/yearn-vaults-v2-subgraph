@@ -1,6 +1,7 @@
 import { Address, ethereum, BigInt } from "@graphprotocol/graph-ts";
 import {
   StrategyAdded as StrategyAddedEvent,
+  StrategyMigrated as StrategyMigratedEvent,
   StrategyReported as StrategyReportedEvent,
   Deposit1Call as DepositCall,
   Transfer as TransferEvent,
@@ -15,7 +16,7 @@ import {
 } from "../utils/vaultBalanceUpdates";
 import { buildIdFromEvent, createEthTransaction, getTimestampInMillis } from "../utils/commons";
 import { getOrCreateVault } from "../utils/vault";
-import { createStrategy, reportStrategy } from "../utils/strategy";
+import { createStrategy, reportStrategy, migrateStrategy } from "../utils/strategy";
 
 
 export function addStrategyToVault(
@@ -57,6 +58,14 @@ export function handleStrategyAdded(event: StrategyAddedEvent): void {
     event.params.debtLimit,
     event.params.performanceFee,
     event.params.rateLimit,
+    event
+  )
+}
+
+export function handleStrategyMigrated(event: StrategyMigratedEvent): void {
+  strategyMigration(
+    event.params.oldVersion,
+    event.params.newVersion,
     event
   )
 }

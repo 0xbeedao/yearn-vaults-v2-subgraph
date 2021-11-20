@@ -340,12 +340,14 @@ type Strategy @entity {
 }
 
 type StrategyMigration @entity {
-  "The Strategy ID."
+  "The Strategy Migration ID."
   id: ID!
   "Old Strategy"
   old: Strategy!
   "New Strategy"
   new: Strategy!
+  "Blocknumber the migration was created."
+  blockNumber: BigInt!
   "Timestamp the migration was created."
   timestamp: BigInt!
 }

@@ -48,6 +48,7 @@ templates:
       entities:
         - Vault
         - Strategy
+        - StategyMigration
         - VaultUpdate
         - Transfer
         - Account
@@ -64,6 +65,8 @@ templates:
           handler: handleStrategyAdded
         - event: StrategyReported(indexed address,uint256,uint256,uint256,uint256,uint256,uint256,uint256)
           handler: handleStrategyReported
+        - event: StrategyMigrated(indexed address,indexed address)
+          handler: handleStrategyMigrated
         # TODO: failing in graph sync at block #11579817  
         # - event: Transfer(indexed address,indexed address,uint256)
         #   handler: handleTransfer
