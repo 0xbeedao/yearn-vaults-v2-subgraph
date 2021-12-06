@@ -195,8 +195,8 @@ export function handleStrategyMigrated(event: StrategyMigrated): void {
     let newStrategyAddress = event.params.newVersion;
 
     let migration = new StrategyMigration(newStrategyAddress.toHexString() + '-' + ethTransaction.id);
-    migration.oldStrategy = oldStrategyId
-    migration.newStrategy = newStrategyId
+    migration.oldStrategy = oldStrategyAddress
+    migration.newStrategy = newStrategyAddress
     migration.blockNumber = event.block.number
     migration.timestamp = getTimestampInMillis(event)
     migration.save()
