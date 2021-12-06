@@ -1772,22 +1772,22 @@ export class StrategyMigration extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get old(): string {
-    let value = this.get("old");
+  get oldStrategy(): string {
+    let value = this.get("oldStrategy");
     return value.toString();
   }
 
-  set old(value: string) {
-    this.set("old", Value.fromString(value));
+  set oldStrategy(value: string) {
+    this.set("oldStrategy", Value.fromString(value));
   }
 
-  get new(): string {
-    let value = this.get("new");
+  get newStrategy(): string {
+    let value = this.get("newStrategy");
     return value.toString();
   }
 
-  set new(value: string) {
-    this.set("new", Value.fromString(value));
+  set newStrategy(value: string) {
+    this.set("newStrategy", Value.fromString(value));
   }
 
   get blockNumber(): BigInt {
