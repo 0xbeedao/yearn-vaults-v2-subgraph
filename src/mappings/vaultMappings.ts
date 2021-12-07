@@ -28,8 +28,8 @@ import {
   getOrCreateTransactionFromCall,
   getOrCreateTransactionFromEvent,
 } from '../utils/transaction';
-import { getTimestampInMillis } from '../utils/commons';
 import * as vaultLibrary from '../utils/vault/vault';
+import * as migrationLibrary from '../utils/strategy/strategy-migration';
 
 export function handleAddStrategyV2(call: AddStrategyV2Call): void {
   if (vaultLibrary.isVault(call.to) && vaultLibrary.isVault(call.from)) {
@@ -175,7 +175,7 @@ export function handleStrategyReported(event: StrategyReportedEvent): void {
   );
 }
 
-export function handleStrategyMigrated(event: StrategyMigrated): void {
+export function handleStrategyMigrated(event: StrategyMigratedEvent): void {
   log.info(
     '[Strategy Migrated] Handle strategy migrated event. Old strategy: {} New strategy: {}',
     [
@@ -193,13 +193,11 @@ export function handleStrategyMigrated(event: StrategyMigrated): void {
 
   if (oldStrategy !== null) {
     let newStrategyAddress = event.params.newVersion;
-
-    let migration = new StrategyMigration(newStrategyAddress.toHexString() + '-' + ethTransaction.id);
-    migration.oldStrategy = oldStrategyAddress
-    migration.newStrategy = newStrategyAddress
-    migration.blockNumber = event.block.number
-    migration.timestamp = getTimestampInMillis(event)
-    migration.save()
+    migrationLibrary.createMigration(
+      oldStrategy,
+      newStrategyAddress,
+      ethTransaction
+    );
 
     if (Strategy.load(newStrategyAddress.toHexString()) !== null) {
       log.warning(
