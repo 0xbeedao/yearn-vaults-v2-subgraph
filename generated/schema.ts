@@ -6,7 +6,6 @@ import {
   Value,
   ValueKind,
   store,
-  Address,
   Bytes,
   BigInt,
   BigDecimal
@@ -602,6 +601,21 @@ export class VaultUpdate extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
+    this.set("timestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
+    this.set("transaction", Value.fromString(""));
+    this.set("vault", Value.fromString(""));
+    this.set("tokensDeposited", Value.fromBigInt(BigInt.zero()));
+    this.set("tokensWithdrawn", Value.fromBigInt(BigInt.zero()));
+    this.set("sharesMinted", Value.fromBigInt(BigInt.zero()));
+    this.set("sharesBurnt", Value.fromBigInt(BigInt.zero()));
+    this.set("balancePosition", Value.fromBigInt(BigInt.zero()));
+    this.set("balanceTokens", Value.fromBigInt(BigInt.zero()));
+    this.set("pricePerShare", Value.fromBigInt(BigInt.zero()));
+    this.set("returnsGenerated", Value.fromBigInt(BigInt.zero()));
+    this.set("totalFees", Value.fromBigInt(BigInt.zero()));
+    this.set("managementFees", Value.fromBigInt(BigInt.zero()));
+    this.set("performanceFees", Value.fromBigInt(BigInt.zero()));
   }
 
   save(): void {
@@ -707,6 +721,15 @@ export class VaultUpdate extends Entity {
 
   set balancePosition(value: BigInt) {
     this.set("balancePosition", Value.fromBigInt(value));
+  }
+
+  get balanceTokens(): BigInt {
+    let value = this.get("balanceTokens");
+    return value!.toBigInt();
+  }
+
+  set balanceTokens(value: BigInt) {
+    this.set("balanceTokens", Value.fromBigInt(value));
   }
 
   get pricePerShare(): BigInt {
