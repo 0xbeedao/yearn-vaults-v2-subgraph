@@ -16,6 +16,7 @@
     "prepare:fantom": "mustache config/fantom.json subgraph.template.yaml > subgraph.yaml",
     "deploy:fantom": "yarn prepare:fantom && yarn build:fantom && yarn thegraph:deploy:fantom",
     "release": "standard-version",
+    "test": "graph test",
     "deploy:mainnet": "yarn prepare:mainnet && yarn build:mainnet && yarn thegraph:deploy:mainnet",
     "lint:check": "prettier --check './**'",
     "lint:fix": "sort-package-json && prettier --write ./**",
@@ -24,8 +25,9 @@
     "postpublish": "pinst --enable"
   },
   "dependencies": {
-    "@graphprotocol/graph-cli": "0.22.1",
-    "@graphprotocol/graph-ts": "0.22.1",
+    "@graphprotocol/graph-cli": "^0.23.0",
+    "@graphprotocol/graph-ts": "^0.23.0",
+    "matchstick-as": "^0.2.0",
     "mustache": "4.1.0"
   },
   "devDependencies": {
