@@ -422,6 +422,8 @@ type StrategyMigration @entity {
   blockNumber: BigInt!
   "Timestamp the migration was created."
   timestamp: BigInt!
+  "Ethereum Transaction"
+  transaction: Transaction!
 }
 
 type StrategyReport @entity {

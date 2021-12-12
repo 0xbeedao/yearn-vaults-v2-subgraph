@@ -29,6 +29,7 @@ export function createMigration(
   migration.newStrategy = newId;
   migration.blockNumber = tx.blockNumber;
   migration.timestamp = tx.timestamp;
+  migration.transaction = tx.id;
   migration.save();
   return migration;
 }

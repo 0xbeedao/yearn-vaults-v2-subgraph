@@ -6,6 +6,7 @@ import {
   Value,
   ValueKind,
   store,
+  Address,
   Bytes,
   BigInt,
   BigDecimal
@@ -655,6 +656,7 @@ export class VaultUpdate extends Entity {
   constructor(id: string) {
     super();
     this.set("id", Value.fromString(id));
+
     this.set("timestamp", Value.fromBigInt(BigInt.zero()));
     this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
     this.set("transaction", Value.fromString(""));
@@ -1917,6 +1919,7 @@ export class StrategyMigration extends Entity {
     this.set("newStrategy", Value.fromString(""));
     this.set("blockNumber", Value.fromBigInt(BigInt.zero()));
     this.set("timestamp", Value.fromBigInt(BigInt.zero()));
+    this.set("transaction", Value.fromString(""));
   }
 
   save(): void {
@@ -1981,6 +1984,15 @@ export class StrategyMigration extends Entity {
 
   set timestamp(value: BigInt) {
     this.set("timestamp", Value.fromBigInt(value));
+  }
+
+  get transaction(): string {
+    let value = this.get("transaction");
+    return value!.toString();
+  }
+
+  set transaction(value: string) {
+    this.set("transaction", Value.fromString(value));
   }
 }
 
